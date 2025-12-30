@@ -32,7 +32,7 @@
    ```
 
 □ 5. Test trên production
-   - Mở: https://hailamdev.space
+   - Mở: https://VNSO.space
    - Check visitor counter
    - Vào /xh.html
    - Nhận lì xì
@@ -51,7 +51,7 @@
    - .env
    - All documentation
 
-✅ Domain: hailamdev.space
+✅ Domain: VNSO.space
 ✅ Redis: Redis Cloud US East
 
 ═══════════════════════════════════════════════════════════════════════
@@ -104,7 +104,7 @@ API returns 500
 
 ## 📞 NEED HELP?
 
-Zalo: 0929501116
-Website: https://hailamdev.space
+Zalo: 0934853639
+Website: https://VNSO.space
 
 ═══════════════════════════════════════════════════════════════════════

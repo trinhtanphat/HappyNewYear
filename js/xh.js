@@ -1,5 +1,15 @@
 const API_BASE_URL = window.location.origin;
 
+// Persist a client-scoped ID in the browser to avoid IP-based limits
+function getDeviceId() {
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        deviceId = 'user_' + Math.random().toString(36).slice(2, 11) + Date.now().toString(36);
+        localStorage.setItem('device_id', deviceId);
+    }
+    return deviceId;
+}
+
 // Hàm format tiền VND
 function formatMoney(amount) {
     return new Intl.NumberFormat('vi-VN', {
@@ -110,6 +120,7 @@ function displayStats(stats) {
 async function giveLuckyMoney() {
     const playerName = document.getElementById("playerName").value.trim();
     const ageGroup = document.getElementById("age").value;
+    const deviceId = getDeviceId();
     
     // Validate
     if (!playerName) {
@@ -124,7 +135,7 @@ async function giveLuckyMoney() {
     
     // Check if player can play
     try {
-        const checkResponse = await fetch(`${API_BASE_URL}/api/game-turns?action=checkLixiTurns`);
+        const checkResponse = await fetch(`${API_BASE_URL}/api/game-turns?action=checkLixiTurns&userId=${encodeURIComponent(deviceId)}`);
         const checkData = await checkResponse.json();
         
         if (!checkData.canPlay) {
@@ -136,7 +147,7 @@ async function giveLuckyMoney() {
         const useResponse = await fetch(`${API_BASE_URL}/api/game-turns`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'useLixiTurn' })
+            body: JSON.stringify({ action: 'useLixiTurn', userId: deviceId })
         });
         
         const useData = await useResponse.json();
@@ -199,7 +210,8 @@ async function giveLuckyMoney() {
 // Check remaining turns after drawing
 async function checkRemainingTurns() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/game-turns?action=checkLixiTurns`);
+        const deviceId = getDeviceId();
+        const response = await fetch(`${API_BASE_URL}/api/game-turns?action=checkLixiTurns&userId=${encodeURIComponent(deviceId)}`);
         const data = await response.json();
         
         const lixiButton = document.getElementById("lixi-button");
@@ -246,7 +258,8 @@ async function checkRemainingTurns() {
 // Check turns on page load
 async function checkTurnsOnLoad() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/game-turns?action=checkLixiTurns`);
+        const deviceId = getDeviceId();
+        const response = await fetch(`${API_BASE_URL}/api/game-turns?action=checkLixiTurns&userId=${encodeURIComponent(deviceId)}`);
         const data = await response.json();
         
         const lixiButton = document.getElementById("lixi-button");

@@ -1,11 +1,11 @@
-# 🎆 Happy New Year 2026 - HaiLamDev
+# 🎆 Happy New Year 2026 - VNSO
 
 [![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?logo=vercel)](https://vercel.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > Website chúc Tết với các trò chơi thú vị, tính năng lì xì may mắn và database để lưu trữ!
 
-🌐 **Live Demo:** [https://happynewyear.hailamdev.space/](https://happynewyear.hailamdev.space/)
+🌐 **Live Demo:** [https://happynewyear.VNSO.space/](https://happynewyear.VNSO.space/)
 
 ---
 
@@ -91,7 +91,7 @@ HappyNewYear/
 - **Database:** Redis Cloud (ioredis)
 - **CDN:** Vercel Global CDN
 - **Deployment:** Vercel
-- **Domain:** hailamdev.space
+- **Domain:** VNSO.space
 
 ---
 
@@ -247,17 +247,17 @@ node test-api.js
 
 ## 👨‍💻 Author
 
-**Nguyen Xuan Hai**
+**VNSO**
 
-- 🌐 Website: [https://hailamdev.space/](https://hailamdev.space/)
-- 💬 Zalo: 0929501116
+- 🌐 Website: [https://VNSO.vn/](https://VNSO.vn/)
+- 💬 Zalo: 0934853639
 - 📧 Email: [Thêm email của bạn]
 
 ---
 
 ## 📝 License
 
-MIT License - Copyright © 2025 Nxhai
+MIT License - Copyright © 2025 VNSO
 
 Tất cả các quyền được bảo lưu.
 
@@ -275,7 +275,7 @@ Tất cả các quyền được bảo lưu.
 
 ### 🎉 Chúc Mừng Năm Mới 2026! 🎉
 
-**Made with ❤️ by HaiLamDev**
+**Made with ❤️ by VNSO**
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/xuanhai0913/HappyNewYear)
 

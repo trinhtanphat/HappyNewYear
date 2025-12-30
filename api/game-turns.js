@@ -28,6 +28,12 @@ function getClientIP(req) {
            'unknown';
 }
 
+// Prefer client-provided ID; fall back to IP when missing
+function getClientId(req) {
+    const providedId = req.body?.userId || req.query?.userId || req.headers['x-user-id'];
+    return (typeof providedId === 'string' && providedId.trim()) ? providedId.trim() : getClientIP(req);
+}
+
 module.exports = async (req, res) => {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -41,7 +47,7 @@ module.exports = async (req, res) => {
     }
 
     const redisClient = getRedis();
-    const clientIP = getClientIP(req);
+    const clientId = getClientId(req);
 
     try {
         // GET - Check available turns
@@ -51,7 +57,7 @@ module.exports = async (req, res) => {
             // Check lixi turns
             if (action === 'checkLixiTurns') {
                 const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-                const lixiKey = `lixi_limit:${clientIP}:${today}`;
+                const lixiKey = `lixi_limit:${clientId}:${today}`;
                 
                 const hasUsed = await redisClient.get(lixiKey);
                 
@@ -65,7 +71,7 @@ module.exports = async (req, res) => {
                 }
 
                 // Check extra turns from KBB wins
-                const extraTurnsKey = `kbb_extra_turns:${clientIP}`;
+                const extraTurnsKey = `kbb_extra_turns:${clientId}`;
                 const extraTurns = parseInt(await redisClient.get(extraTurnsKey) || '0');
 
                 return res.status(200).json({
@@ -78,7 +84,7 @@ module.exports = async (req, res) => {
 
             // Check KBB ban status
             if (action === 'checkKBBBan') {
-                const banKey = `kbb_ban:${clientIP}`;
+                const banKey = `kbb_ban:${clientId}`;
                 const banUntil = await redisClient.get(banKey);
 
                 if (banUntil) {
@@ -115,7 +121,7 @@ module.exports = async (req, res) => {
             // Use lixi turn
             if (action === 'useLixiTurn') {
                 const today = new Date().toISOString().split('T')[0];
-                const lixiKey = `lixi_limit:${clientIP}:${today}`;
+                const lixiKey = `lixi_limit:${clientId}:${today}`;
                 
                 const hasUsed = await redisClient.get(lixiKey);
                 if (hasUsed) {
@@ -127,7 +133,7 @@ module.exports = async (req, res) => {
                 }
 
                 // Check extra turns
-                const extraTurnsKey = `kbb_extra_turns:${clientIP}`;
+                const extraTurnsKey = `kbb_extra_turns:${clientId}`;
                 const extraTurns = parseInt(await redisClient.get(extraTurnsKey) || '0');
 
                 if (extraTurns > 0) {
@@ -153,7 +159,7 @@ module.exports = async (req, res) => {
 
             // KBB Win - Add extra turn
             if (action === 'kbbWin') {
-                const extraTurnsKey = `kbb_extra_turns:${clientIP}`;
+                const extraTurnsKey = `kbb_extra_turns:${clientId}`;
                 const newTurns = await redisClient.incr(extraTurnsKey);
                 await redisClient.expire(extraTurnsKey, 86400); // Expire after 24 hours
 
@@ -166,7 +172,7 @@ module.exports = async (req, res) => {
 
             // KBB Loss - Ban for 15 minutes
             if (action === 'kbbLoss') {
-                const banKey = `kbb_ban:${clientIP}`;
+                const banKey = `kbb_ban:${clientId}`;
                 const banUntil = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
                 
                 await redisClient.set(banKey, banUntil.toISOString(), 'EX', 900); // 15 minutes in seconds
