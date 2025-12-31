@@ -1,5 +1,5 @@
 // Admin Panel JavaScript
-const ADMIN_PASSWORD = 'xuanhai0913';
+const ADMIN_PASSWORD = 'phattrinhne';
 const API_BASE_URL = window.location.origin;
 
 // Check if already logged in
