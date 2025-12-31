@@ -27,7 +27,7 @@ module.exports = async function handler(req, res) {
         const data = await redis.get('lixi_leaderboard');
         const leaderboard = data ? JSON.parse(data) : [];
         return res.status(200).json({
-          leaderboard: leaderboard.slice(0, 10), // Top 10
+          leaderboard: leaderboard.slice(0, 100), // Top 10
           success: true
         });
       }
